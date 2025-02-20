@@ -1,7 +1,7 @@
 import blenderproc as bproc
 import numpy as np
 
-data_path = "/scratch/wty/hm3d-minival-glb-v0.2/00801-HaxA7YrQdEC"
+data_path = "/scratch/wty/hm3d-minival-glb-v0.2"
 
 # Load a random Matterport3D room
 objects, floor = bproc.loader.load_matterport3d(data_path)
