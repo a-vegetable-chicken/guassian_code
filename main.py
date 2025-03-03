@@ -12,6 +12,7 @@ bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor])
 poses = 0
 for try_counter in range(10000):
     location = bproc.sampler.upper_region([floor], min_height=1.5, max_height=1.8)
+    print(location)
     # Check that there is no object between the sampled point and the floor
     _, _, _, _, hit_object, _ = bproc.object.scene_ray_cast(location, [0, 0, -1])
     if hit_object != floor:
@@ -28,6 +29,8 @@ for try_counter in range(10000):
 
     # If all checks were passed, add the camera pose
     bproc.camera.add_camera_pose(cam2world_matrix)
+    print('camera_metrix',cam2world_matrix)
     poses += 1
+
     if poses == 5:
         break
