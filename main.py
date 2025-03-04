@@ -61,7 +61,8 @@ for try_counter in range(10000):
         break
 
 ps = bproc.camera.get_camera_pose()
-print(p for p in ps)
+for p in ps:
+    print(p)
     
 
 '''
