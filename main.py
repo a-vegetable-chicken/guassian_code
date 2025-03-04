@@ -66,14 +66,12 @@ bproc.camera.set_intrinsics_from_K_matrix(
 )
 print('0')
 bproc.renderer.set_max_amount_of_samples(50)
-
-data = bproc.renderer.render()
 print('1')
+data = bproc.renderer.render()
+print('2')
 output_dir = "../output"
 
 #os.makedirs(output_dir, exist_ok=True)
-print('2')
-
 bproc.writer.write_png(
     output_dir, 
     data, 
