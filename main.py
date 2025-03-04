@@ -2,9 +2,23 @@ import blenderproc as bproc
 import numpy as np
 
 data_path = "/scratch_net/biwidl311/wty/HM3D"
+info_txt_path = "./_info.txt"
+
+intrinsics = {}
+with open(info_txt_path, "r") as file:
+    for line in file:
+        parts = line.strip().split(" = ")
+        if len(parts) == 2:
+
+            key, value = parts
+
+            if key == "m_calibrationColorIntrinsic":
+                intrinsics["color"] = np.array(value.split(), dtype=float).reshape(4, 4)
+            elif key == "m_calibrationDepthIntrinsic":
+                intrinsics["depth"] = np.array(value.split(), dtype=float).reshape(4, 4)
 
 # Load a random Matterport3D room
-[objects, floor]= bproc.loader.load_matterport3d(data_path)
+objects, floor= bproc.loader.load_matterport3d(data_path)
 
 # Init bvh tree containing all mesh objects
 bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor])
@@ -29,10 +43,10 @@ for try_counter in range(10000):
 
     # If all checks were passed, add the camera pose
     bproc.camera.add_camera_pose(cam2world_matrix)
-    print('camera_metrix: ')
-    print(cam2world_matrix)
     
+    print(cam2world_matrix)
+
     poses += 1
 
-    if poses == 5:
+    if poses == 10 :
         break
