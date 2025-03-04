@@ -4,7 +4,7 @@ import os
 
 data_path = "/scratch_net/biwidl311/wty/HM3D/"
 info_txt_path = "./_info.txt"
-
+'''
 intrinsics = {}
 with open(info_txt_path, "r") as file:
     for line in file:
@@ -23,8 +23,14 @@ with open(info_txt_path, "r") as file:
                 intrinsics["color_height"] = value
 
 
+bproc.camera.set_intrinsics_from_K_matrix(
+    intrinsics["color"][:3, :3]
+    int(intrinsics["color_width"])
+    int(intrinsics["color_height"])
+)
+'''
 # Load a random Matterport3D room
-[objects, floor]= bproc.loader.load_matterport3d(data_path)
+objects, floor = bproc.loader.load_matterport3d(data_path)
 
 # Init bvh tree containing all mesh objects
 bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor])
@@ -55,27 +61,14 @@ for try_counter in range(10000):
         break
     
 
-color_k = intrinsics["color"][:3, :3]
-color_width = int(intrinsics["color_width"])
-color_height = int(intrinsics["color_height"])
-
-
-bproc.camera.set_intrinsics_from_K_matrix(
-    K = color_k,
-    image_width = color_width,
-    image_height = color_height
-)
-print('0')
+'''
 bproc.renderer.set_max_amount_of_samples(50)
-print('1')
-bproc.renderer.set_animation(False)
 data = bproc.renderer.render()
-print('2')
-output_dir = "../output"
 
-#os.makedirs(output_dir, exist_ok=True)
+output_dir = '../output'
 bproc.writer.write_png(
     output_dir, 
     data, 
     color_depth="8"  
 )
+'''
