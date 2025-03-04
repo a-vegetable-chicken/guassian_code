@@ -2,7 +2,7 @@ import blenderproc as bproc
 import numpy as np
 import os
 
-data_path = "/scratch_net/biwidl311/wty/HM3D"
+data_path = "/scratch_net/biwidl311/wty/HM3D/v1/scans/8194nk5LbLH/8194nk5LbLH/matterport_mesh/9266ab00ab6744348efa7afe13b3db9f/9266ab00ab6744348efa7afe13b3db9f.obj"
 info_txt_path = "./_info.txt"
 
 intrinsics = {}
