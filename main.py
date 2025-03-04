@@ -53,6 +53,7 @@ for try_counter in range(10000):
     poses += 1
     if poses == 5:
         break
+    
 
 color_k = intrinsics["color"][:3, :3]
 color_width = int(intrinsics["color_width"])
@@ -67,6 +68,7 @@ bproc.camera.set_intrinsics_from_K_matrix(
 print('0')
 bproc.renderer.set_max_amount_of_samples(50)
 print('1')
+bproc.renderer.set_animation(False)
 data = bproc.renderer.render()
 print('2')
 output_dir = "../output"
@@ -75,5 +77,6 @@ output_dir = "../output"
 bproc.writer.write_png(
     output_dir, 
     data, 
-    color_depth="8"  # 8位深
+    color_depth="8"  
 )
+'''
