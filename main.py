@@ -2,7 +2,7 @@ import blenderproc as bproc
 import numpy as np
 import os
 
-data_path = "/scratch_net/biwidl311/wty/HM3D/v1/scans/8194nk5LbLH/8194nk5LbLH/matterport_mesh/9266ab00ab6744348efa7afe13b3db9f"
+data_path = "/scratch_net/biwidl311/wty/HM3D/"
 info_txt_path = "./_info.txt"
 
 intrinsics = {}
@@ -19,7 +19,7 @@ with open(info_txt_path, "r") as file:
                 intrinsics["depth"] = np.array(value.split(), dtype=float).reshape(4, 4)
 
 # Load a random Matterport3D room
-objects, floor= bproc.loader.load_matterport3d(data_path)
+[objects, floor]= bproc.loader.load_matterport3d(data_path)
 
 # Init bvh tree containing all mesh objects
 bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor])
