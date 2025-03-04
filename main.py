@@ -60,8 +60,8 @@ for try_counter in range(10000):
     if poses == 5:
         break
 
-p = bproc.camera.get_camera_poses()
-print(p)
+ps = bproc.camera.get_camera_poses()
+print(p for p in ps)
     
 
 '''
