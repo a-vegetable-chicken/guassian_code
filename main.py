@@ -17,6 +17,11 @@ with open(info_txt_path, "r") as file:
                 intrinsics["color"] = np.array(value.split(), dtype=float).reshape(4, 4)
             elif key == "m_calibrationDepthIntrinsic":
                 intrinsics["depth"] = np.array(value.split(), dtype=float).reshape(4, 4)
+            elif key == 'm_colorWidth':
+                intrinsics["color_width"] = value
+            elif key == 'm_colorHeight':
+                intrinsics["color_height"] = value
+
 
 # Load a random Matterport3D room
 [objects, floor]= bproc.loader.load_matterport3d(data_path)
@@ -49,22 +54,55 @@ for try_counter in range(10000):
     if poses == 5:
         break
 
-    
-color_intr_3x3 = intrinsics["color"][:3, :3]
-bproc.camera.set_intrinsics_from_K_matrix(color_intr_3x3, image_width=960, image_height=540)
+color_k = intrinsics["color"][:3, :3] 
+depth_k = intrinsics["depth"][:3, :3]
 
-bproc.renderer.enable_depth_output(activate_antialiasing=False)
-bproc.renderer.set_max_amount_of_samples(50)
+width = int(intrinsics["color_width"])
+height = int(intrinsics["color_height"])
+bproc.camera.set_intrinsics_from_K_matrix(
+    K_matrix=color_k,
+    image_width=width,
+    image_height=height
+)
 
-data = bproc.renderer.render()
+bproc.renderer.set_light_bounces(
+    diffuse_bounces=200,
+    glossy_bounces=200,
+    max_bounces=200,
+    transmission_bounces=200
+)
+bproc.renderer.set_output_format(enable_transparency=True)
+
+
+bproc.renderer.enable_depth_output(
+    activate_antialiasing=False,
+    depth_layers=np.inf
+)
+
+render_data = bproc.renderer.render()
+
+depth_shift = 1000  
+render_data["depth"] = [d * depth_shift for d in render_data["depth"]]
 
 
 output_dir = "../output"
-
 os.makedirs(output_dir, exist_ok=True)
 
-bproc.writer.write_hdf5(output_dir, data, append_to_existing_output=False)
-
-bproc.writer.write_png(output_dir, data, color_depth="8")
-
-print(f"render {poses} and output to: {output_dir}")
+bproc.writer.write_hdf5(
+    output_dir,
+    render_data,
+    colors=render_data["colors"],
+    depths=render_data["depth"],
+    append_to_existing_output=False,
+    custom_attributes={
+        "intrinsics": {
+            "color": color_k.tolist(),
+            "depth": depth_k.tolist()
+        },
+        "resolution": {
+            "color": (width, height),
+            "depth": (int(intrinsics.get("m_depthWidth", 224)), 
+            int(intrinsics.get("m_depthHeight", 172))
+        }
+    }
+)
