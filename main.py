@@ -58,18 +58,20 @@ color_k = intrinsics["color"][:3, :3]
 color_width = int(intrinsics["color_width"])
 color_height = int(intrinsics["color_height"])
 
+
 bproc.camera.set_intrinsics_from_K_matrix(
     K = color_k,
     image_width = color_width,
     image_height = color_height
 )
 
+print("poses = ",poses)
 bproc.renderer.set_max_amount_of_samples(50)
 
 data = bproc.renderer.render()
 
 output_dir = "../output"
-os.makedirs(output_dir, exist_ok=True)
+#os.makedirs(output_dir, exist_ok=True)
 
 bproc.writer.write_png(
     output_dir, 
