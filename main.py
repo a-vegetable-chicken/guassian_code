@@ -55,7 +55,7 @@ for try_counter in range(10000):
 
     # If all checks were passed, add the camera pose
     bproc.camera.add_camera_pose(cam2world_matrix)
-
+    print(bproc.camera.get_camera_pose())
     poses += 1
     if poses == 5:
         break
