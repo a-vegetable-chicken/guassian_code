@@ -79,4 +79,3 @@ bproc.writer.write_png(
     data, 
     color_depth="8"  
 )
-'''
