@@ -54,55 +54,25 @@ for try_counter in range(10000):
     if poses == 5:
         break
 
-color_k = intrinsics["color"][:3, :3] 
-depth_k = intrinsics["depth"][:3, :3]
+color_k = intrinsics["color"][:3, :3]
+color_width = int(intrinsics["color_width"])
+color_height = int(intrinsics["color_height"])
 
-width = int(intrinsics["color_width"])
-height = int(intrinsics["color_height"])
 bproc.camera.set_intrinsics_from_K_matrix(
-    K_matrix=color_k,
-    image_width=width,
-    image_height=height
+    K = color_k,
+    image_width = color_width,
+    image_height = color_height
 )
 
-bproc.renderer.set_light_bounces(
-    diffuse_bounces=200,
-    glossy_bounces=200,
-    max_bounces=200,
-    transmission_bounces=200
-)
-bproc.renderer.set_output_format(enable_transparency=True)
+bproc.renderer.set_max_amount_of_samples(50)
 
-
-bproc.renderer.enable_depth_output(
-    activate_antialiasing=False,
-    depth_layers=np.inf
-)
-
-render_data = bproc.renderer.render()
-
-depth_shift = 1000  
-render_data["depth"] = [d * depth_shift for d in render_data["depth"]]
-
+data = bproc.renderer.render()
 
 output_dir = "../output"
 os.makedirs(output_dir, exist_ok=True)
 
-bproc.writer.write_hdf5(
-    output_dir,
-    render_data,
-    colors=render_data["colors"],
-    depths=render_data["depth"],
-    append_to_existing_output=False,
-    custom_attributes={
-        "intrinsics": {
-            "color": color_k.tolist(),
-            "depth": depth_k.tolist()
-        },
-        "resolution": {
-            "color": (width, height),
-            "depth": (int(intrinsics.get("m_depthWidth", 224)), 
-            int(intrinsics.get("m_depthHeight", 172))
-        }
-    }
+bproc.writer.write_png(
+    output_dir, 
+    data, 
+    color_depth="8"  # 8位深
 )
