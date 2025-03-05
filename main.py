@@ -31,7 +31,7 @@ bproc.camera.set_intrinsics_from_K_matrix(
 
 
 # Load a random Matterport3D room
-objects, floor = bproc.loader.load_matterport3d(data_path)
+[objects, floor] = bproc.loader.load_matterport3d(data_path)
 
 # Init bvh tree containing all mesh objects
 bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor])
