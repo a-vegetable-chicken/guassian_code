@@ -23,8 +23,8 @@ with open(info_txt_path, "r") as file:
 
 
 bproc.camera.set_intrinsics_from_K_matrix(
-    parameters["color"][:3, :3]
-    int(parameters["m_colorWidth"])
+    parameters["color"][:3, :3],
+    int(parameters["m_colorWidth"]),
     int(parameters["m_colorHeight"])
 )
 
