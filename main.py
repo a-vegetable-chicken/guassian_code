@@ -2,7 +2,7 @@ import blenderproc as bproc
 import numpy as np
 import os
 
-data_path = "/scratch_net/biwidl311/wty/HM3D/"
+data_path = "/scratch_net/biwidl311/wty/HM3D/v1/scans/2azQ1b91cZZ/"
 info_txt_path = "./_info.txt"
 
 '''
@@ -28,7 +28,6 @@ bproc.camera.set_intrinsics_from_K_matrix(
     int(parameters["m_colorHeight"])
 )
 '''
-
 
 # Load a random Matterport3D room
 [objects, floor] = bproc.loader.load_matterport3d(data_path)
@@ -60,12 +59,6 @@ for try_counter in range(10000):
     poses += 1
     if poses == 5:
         break
-
-stored_poses = bproc.camera.get_camera_poses()
-print(f"Total stored camera poses: {len(stored_poses)}")
-for i, pose in enumerate(stored_poses):
-    print(f"Pose {i}:\n{pose}\n")
-    
 
 '''
 bproc.renderer.set_max_amount_of_samples(50)
