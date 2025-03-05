@@ -4,31 +4,32 @@ import os
 
 data_path = "/scratch_net/biwidl311/wty/HM3D/"
 info_txt_path = "./_info.txt"
+
 '''
-intrinsics = {}
+parameters = {}
 with open(info_txt_path, "r") as file:
     for line in file:
         parts = line.strip().split(" = ")
         if len(parts) == 2:
 
-            key, value = parts
+            key , value = parts
 
             if key == "m_calibrationColorIntrinsic":
-                intrinsics["color"] = np.array(value.split(), dtype=float).reshape(4, 4)
+                parameters["color"] = np.array(value.split(), dtype=float).reshape(4, 4)
             elif key == "m_calibrationDepthIntrinsic":
-                intrinsics["depth"] = np.array(value.split(), dtype=float).reshape(4, 4)
-            elif key == 'm_colorWidth':
-                intrinsics["color_width"] = value
-            elif key == 'm_colorHeight':
-                intrinsics["color_height"] = value
+                parameters["depth"] = np.array(value.split(), dtype=float).reshape(4, 4)
+            else :
+                parameters[key] = value
 
 
 bproc.camera.set_intrinsics_from_K_matrix(
-    intrinsics["color"][:3, :3]
-    int(intrinsics["color_width"])
-    int(intrinsics["color_height"])
+    parameters["color"][:3, :3]
+    int(parameters["m_colorWidth"])
+    int(parameters["m_colorHeight"])
 )
 '''
+
+
 # Load a random Matterport3D room
 objects, floor = bproc.loader.load_matterport3d(data_path)
 
@@ -60,9 +61,10 @@ for try_counter in range(10000):
     if poses == 5:
         break
 
-ps = bproc.camera.get_camera_pose()
-for p in ps:
-    print(p)
+stored_poses = bproc.camera.get_camera_poses()
+print(f"Total stored camera poses: {len(stored_poses)}")
+for i, pose in enumerate(stored_poses):
+    print(f"Pose {i}:\n{pose}\n")
     
 
 '''
