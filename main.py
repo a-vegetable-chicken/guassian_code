@@ -5,7 +5,7 @@ import os
 data_path = "/scratch_net/biwidl311/wty/HM3D/v1/scans/2azQ1b91cZZ/"
 info_txt_path = "./_info.txt"
 
-'''
+
 parameters = {}
 with open(info_txt_path, "r") as file:
     for line in file:
@@ -27,13 +27,13 @@ bproc.camera.set_intrinsics_from_K_matrix(
     int(parameters["m_colorWidth"])
     int(parameters["m_colorHeight"])
 )
-'''
+
 
 # Load a random Matterport3D room
 [objects, floor] = bproc.loader.load_matterport3d(data_path)
 
 # Init bvh tree containing all mesh objects
-bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor])
+bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor]) 
 
 poses = 0
 for try_counter in range(10000):
@@ -60,14 +60,5 @@ for try_counter in range(10000):
     if poses == 5:
         break
 
-'''
-bproc.renderer.set_max_amount_of_samples(50)
-data = bproc.renderer.render()
-
-output_dir = '../output'
-bproc.writer.write_png(
-    output_dir, 
-    data, 
-    color_depth="8"  
-)
-'''
+num_frame = bproc.utility.num_frames()
+print(num_frame)
