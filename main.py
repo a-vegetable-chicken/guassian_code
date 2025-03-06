@@ -65,4 +65,6 @@ for try_counter in range(10000):
 
 print("num of frames:",bproc.utility.num_frames())
 
-data = bproc.renderer.render(output_dir = '../output', file_prefix = 'color',verbose= True)
+import os
+print(os.access("../output", os.W_OK))
+#data = bproc.renderer.render(output_dir = '../output', file_prefix = 'color',verbose= True)
