@@ -68,4 +68,4 @@ print("num of frames:",bproc.utility.num_frames())
 import os
 print(os.access("/scratch_net/biwidl311/wty/output", os.W_OK))
 
-data = bproc.renderer.render(output_dir = "/scratch_net/biwidl311/wty/output", file_prefix = 'color',verbose= True)
+data = bproc.renderer.render(output_dir = "/scratch_net/biwidl311/wty/output", file_prefix = 'color',verbose= True,keep_files = True)
