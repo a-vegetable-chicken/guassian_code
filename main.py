@@ -28,12 +28,15 @@ bproc.camera.set_intrinsics_from_K_matrix(
     int(parameters["m_colorHeight"])
 )
 
+bproc.utility.reset_keyframes()
 
 # Load a random Matterport3D room
 [objects, floor] = bproc.loader.load_matterport3d(data_path)
 
 # Init bvh tree containing all mesh objects
 bvh_tree = bproc.object.create_bvh_tree_multi_objects([objects, floor]) 
+
+
 
 poses = 0
 for try_counter in range(10000):
@@ -60,5 +63,6 @@ for try_counter in range(10000):
     if poses == 5:
         break
 
-num_frame = bproc.utility.num_frames()
-print(num_frame)
+print("num of frames:",bproc.utility.num_frames())
+
+data = bproc.renderer.render(output_dir = '../output', file_prefix = 'color',verbose= True)
